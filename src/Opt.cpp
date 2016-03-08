@@ -17,18 +17,12 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <BoolOpt.hpp>
+#include <Opt.hpp>
 
 namespace lap {
 
-BoolOpt::BoolOpt (const string& description, boolOptFunc callback,
-		const string& alias) : Opt (description, alias), callback (callback) {}
-
-
-int BoolOpt::match (int argc, char **argv) {
-	callback ();
-	return 0;
-}
+Opt::Opt (const string& description, const string& alias)
+		: Arg (description), alias (alias) {}
 
 }
 

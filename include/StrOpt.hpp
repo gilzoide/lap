@@ -22,7 +22,7 @@
  */
 #pragma once
 
-#include <Arg.hpp>
+#include <Opt.hpp>
 
 #include <functional>
 #include <vector>
@@ -30,7 +30,7 @@
 namespace lap {
 
 /// String Option callback function: expects it's N arguments on a vector
-using strOptFunc = function<bool (vector <const char *>)>;
+using strOptFunc = function<void (vector <const char *>)>;
 
 /**
  * String option, those who expect N arguments
@@ -44,8 +44,8 @@ public:
 	 * @param n Number of expected arguments
 	 * @param callback Function to be called when option is matched
 	 */
-	StrOpt (const string description, int n, strOptFunc callback,
-			const string alias = "");
+	StrOpt (const string& description, int n, strOptFunc callback,
+			const string& alias = "");
 	
 	/**
 	 * There was a match: call callback with the following args

@@ -22,13 +22,13 @@
  */
 #pragma once
 
-#include <Arg.hpp>
+#include <Opt.hpp>
 
 #include <functional>
 
 namespace lap {
 
-using boolOptFunc = function<bool ()>;
+using boolOptFunc = function<void ()>;
 
 /**
  * Boolean option, those who don't expect arguments itself
@@ -41,8 +41,8 @@ public:
 	 * @param description Option description
 	 * @param callback Function to be called when option is matched
 	 */
-	BoolOpt (const string description, boolOptFunc callback,
-			const string alias = "");
+	BoolOpt (const string& description, boolOptFunc callback,
+			const string& alias = "");
 	
 	/**
 	 * There was a match: call callback

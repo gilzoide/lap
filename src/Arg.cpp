@@ -26,9 +26,4 @@ Arg::Arg (const string description) : description (description) {}
 
 Arg::~Arg () {}
 
-
-//---- Opt ----//
-Opt::Opt (const string description, const string alias)
-		: Arg (description), alias (alias) {}
-
 }

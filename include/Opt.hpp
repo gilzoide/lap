@@ -17,12 +17,12 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-/** @file Arg.hpp
- * Entry of an expected argument. There are several types of Args, including
- * bool options, value options and positional values.
- * @note Positional values are parsed after the options
+/** @file Opt.hpp
+ * Entry of an expected option. Options are non-positional arguments
  */
 #pragma once
+
+#include <Arg.hpp>
 
 #include <string>
 
@@ -31,37 +31,28 @@ using namespace std;
 namespace lap {
 
 /**
- * Argument expected, here for polimorphism
+ * Options, that may be in any place on argv (non-positional arguments)
+ *
+ * @note Options may have an alias (like "-h" and "--help")
  */
-class Arg {
+class Opt : public Arg {
 public:
 	/**
 	 * Ctor
 	 *
 	 * @param description Argument description
+	 * @param alias Arg alias. Default: "" (empty string)
 	 */
-	Arg (const string description);
+	Opt (const string& description, const string& alias = "");
 
 	/**
-	 * Virtual dtor
-	 */
-	virtual ~Arg ();
-
-	/**
-	 * Function called when there was a match
-	 *
-	 * @param argc Number of available arguments
-	 * @param argv Available arguments
-	 *
-	 * @return Number or extra arguments consumed
-	 *
-	 * @throws Exception if something went wrong (like number of extra arguments
-	 *  not met)
+	 * Still, the match function
 	 */
 	virtual int match (int argc, char **argv) = 0;
 
-	/// Argument/option description
-	string description;
+	/// Option alias
+	string alias;
 };
 
 }
+

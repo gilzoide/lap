@@ -76,17 +76,25 @@ void ArgParser::expect (const string& option, const string& description, int n,
 
 
 
-void ArgParser::parse (int argc, char **argv) {
+vector<const char *> ArgParser::parse (int argc, char **argv) {
 	// argv iterator
 	auto it = argv;
-	for (int i = 0; i < argc; i++) {
-		cout << *it << endl;
-		it++;
+	// how many args each Opt will advance
+	int advance;
+	vector<const char *> unknownOpts;
+	for (int i = 0; i < argc; i += advance, it += advance) {
+		auto opt = knownOpts.find (*it);
+		// it's a known option
+		if (opt != knownOpts.end ()) {
+			advance = opt->second->match (argc - i, it) + 1;
+		}
+		else {
+			unknownOpts.push_back (*it);
+			advance = 1;
+		}
 	}
 
-	for (auto & arg : knownOpts) {
-		cout << arg.first << ": " << arg.second->description << endl;
-	}
+	return move (unknownOpts);
 }
 
 }

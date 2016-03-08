@@ -64,7 +64,7 @@ public:
 	 * @param argc Number of arguments passed
 	 * @param argv Array of arguments
 	 */
-	void parse (int argc, char **argv);
+	vector<const char *> parse (int argc, char **argv);
 
 	/**
 	 * Expect a BoolArg, with custom description and no argument callback

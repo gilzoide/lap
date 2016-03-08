@@ -21,8 +21,8 @@
 
 namespace lap {
 
-StrOpt::StrOpt (const string description, int n,
-		strOptFunc callback, const string alias)
+StrOpt::StrOpt (const string& description, int n,
+		strOptFunc callback, const string& alias)
 		: Opt (description, alias), n (n), callback (callback) {}
 
 
