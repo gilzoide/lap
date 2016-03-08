@@ -1,0 +1,13 @@
+build {
+	input = 'main.cpp',
+	std = 'c++11',
+	includes = '../include',
+	links = 'lap',
+	libDirs = '../build',
+	deps = {liblap}
+}
+
+exclusiveTarget ('run', command {
+	command = 'LD_LIBRARY_PATH=' .. hell.outdir .. ' build/main',
+	args = arg
+})

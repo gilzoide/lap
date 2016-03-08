@@ -1,0 +1,7 @@
+return cpp.shared {
+	input = utils.glob '*.cpp',
+	output = 'liblap.so',
+	std = 'c++11',
+	includes = '../include',
+	flags = debug == '1' and '&-g' or ''
+}

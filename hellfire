@@ -1,0 +1,19 @@
+hell.help = [[
+Welcome to lap build script
+===========================
+
+lap is the Lambda Argument Parser, a functional style C++11 library for parsing
+command line arguments
+
+Call with `hell debug=1` for a debug build (-g compiler flag)
+]]
+
+hell.outdir = 'build'
+
+-- liblap.so, global so that the test can depend on it
+liblap = feedHellFire 'src/hellfire'
+
+-- Executable test (with main and stuff)
+feedHellFire 'test/hellfire'
+
+install (liblap, utils.makePath (prefix or hell.os.prefix, 'lib', 'lap'))
