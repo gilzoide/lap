@@ -21,8 +21,12 @@
 
 namespace lap {
 
-Opt::Opt (const string& description, const string& alias)
-		: Arg (description), alias (alias) {}
+Opt::Opt (const string& name, const string& alias, const string& description)
+		: Arg (name, description), alias (alias) {}
+
+
+Opt::Opt (const string& name, const string& description)
+		: Opt (name, "", description) {}
 
 }
 

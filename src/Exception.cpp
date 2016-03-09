@@ -20,6 +20,7 @@
 #include <Exception.hpp>
 
 #include <sstream>
+#include <cstring>
 
 namespace lap {
 

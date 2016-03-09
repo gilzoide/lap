@@ -30,7 +30,7 @@
 namespace lap {
 
 /// String Option callback function: expects it's N arguments on a vector
-using strOptFunc = function<void (vector <const char *>)>;
+using strOptFunc = function<bool (vector <const char *>)>;
 
 /**
  * String option, those who expect N arguments
@@ -44,13 +44,25 @@ public:
 	 * @param n Number of expected arguments
 	 * @param callback Function to be called when option is matched
 	 */
-	StrOpt (const string& description, int n, strOptFunc callback,
-			const string& alias = "");
+	StrOpt (const string& name, const string& alias, const string& description,
+			int n, strOptFunc callback);
+	/**
+	 * Ctor overload without alias
+	 */
+	StrOpt (const string& name, const string& description, int n,
+			strOptFunc callback);
 	
 	/**
 	 * There was a match: call callback with the following args
 	 */
-	int match (int argc, char **argv) override;
+	bool match (int argc, char **argv) override;
+
+	/**
+	 * Extra arguments expected
+	 *
+	 * @return n
+	 */
+	unsigned int numExtraArguments () override;
 
 	/// Number of arguments expected
 	int n;

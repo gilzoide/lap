@@ -40,15 +40,25 @@ public:
 	/**
 	 * Ctor
 	 *
+	 * @param name Argument name
+	 * @param alias Opt alias
 	 * @param description Argument description
-	 * @param alias Arg alias. Default: "" (empty string)
 	 */
-	Opt (const string& description, const string& alias = "");
+	Opt (const string& name, const string& alias, const string& description);
+	/**
+	 * Ctor overload without alias
+	 */
+	Opt (const string& name, const string& description);
 
 	/**
 	 * Still, the match function
 	 */
-	virtual int match (int argc, char **argv) = 0;
+	virtual bool match (int argc, char **argv) = 0;
+
+	/**
+	 * Still, the numExtraArguments function
+	 */
+	virtual unsigned int numExtraArguments () = 0;
 
 	/// Option alias
 	string alias;

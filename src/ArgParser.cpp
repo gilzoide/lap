@@ -39,59 +39,86 @@ ArgParser::~ArgParser () {
 }
 
 
-void ArgParser::expect (const string& option, const string& description,
-		boolOptFunc callback, const string& optionAlias) {
+void ArgParser::expect (const string& option, const string& optionAlias,
+		const string& description, boolOptFunc callback) {
 	if (!option.empty ()) {
 		// create BoolArg and insert it
-		auto newArg = new BoolOpt (description, callback, optionAlias);
+		auto newArg = new BoolOpt (option, optionAlias, description, callback);
 		knownOpts.insert (make_pair (option, newArg));
 
 		// there's an alias, insert it too
 		if (!optionAlias.empty ()) {
-			knownOpts.insert (make_pair (option, newArg));
+			knownOpts.insert (make_pair (optionAlias, newArg));
 		}
 	}
 	else {
 		throw Exception ("ArgParser::expect", "Option name can't be empty!");
 	}
 }
+void ArgParser::expect (const string& option, const string& description,
+			boolOptFunc callback) {
+	expect (option, "", description, callback);
+}
 
 
-void ArgParser::expect (const string& option, const string& description, int n,
-			strOptFunc callback, const string& optionAlias) {
+void ArgParser::expect (const string& option, const string& optionAlias,
+			const string& description, int n, strOptFunc callback) {
 	if (!option.empty ()) {
 		// create StrArg and insert it
-		auto newArg = new StrOpt (description, n, callback, optionAlias);
+		auto newArg = new StrOpt (option, optionAlias, description, n, callback);
 		knownOpts.insert (make_pair (option, newArg));
 
 		// there's an alias, insert it too
 		if (!optionAlias.empty ()) {
-			knownOpts.insert (make_pair (option, newArg));
+			knownOpts.insert (make_pair (optionAlias, newArg));
 		}
 	}
 	else {
 		throw Exception ("ArgParser::expect", "Option name can't be empty!");
 	}
+}
+void ArgParser::expect (const string& option, const string& description, int n,
+			strOptFunc callback) {
+	expect (option, "", description, n, callback);
 }
 
 
 
 vector<const char *> ArgParser::parse (int argc, char **argv) {
-	// argv iterator
-	auto it = argv;
-	// how many args each Opt will advance
-	int advance;
+	// a vector to store the unknown options
 	vector<const char *> unknownOpts;
-	for (int i = 0; i < argc; i += advance, it += advance) {
-		auto opt = knownOpts.find (*it);
+	// how many args will we advance each time
+	unsigned int advance;
+	unsigned int i;
+	
+	// while there are arguments left
+	while (argc > 0) {
+		auto entry = knownOpts.find (*argv);
 		// it's a known option
-		if (opt != knownOpts.end ()) {
-			advance = opt->second->match (argc - i, it) + 1;
+		if (entry != knownOpts.end ()) {
+			auto opt = entry->second;
+			// get how much we should advance
+			advance = opt->numExtraArguments () + 1;
+			for (i = 1; i < advance; i++) {
+				// if any extra argument needed is a known option, complain
+				if (knownOpts.find (argv[i]) != knownOpts.end ()) {
+					throw Exception ("ArgParser::parse",
+							"Not enough arguments for \"" + opt->name + "\"");
+				}
+			}
+			// and go parse stuff. If asked to stop, do it
+			if (!opt->match (argc, argv)) {
+				break;
+			}
 		}
 		else {
-			unknownOpts.push_back (*it);
+			unknownOpts.push_back (*argv);
 			advance = 1;
 		}
+
+		// neeeeeext
+		argc -= advance;
+		argv += advance;
 	}
 
 	return move (unknownOpts);

@@ -21,12 +21,21 @@
 
 namespace lap {
 
-BoolOpt::BoolOpt (const string& description, boolOptFunc callback,
-		const string& alias) : Opt (description, alias), callback (callback) {}
+BoolOpt::BoolOpt (const string& name, const string& alias,
+		const string& description, boolOptFunc callback)
+		: Opt (name, alias, description), callback (callback) {}
 
 
-int BoolOpt::match (int argc, char **argv) {
-	callback ();
+BoolOpt::BoolOpt (const string& name, const string& description,
+		boolOptFunc callback) : BoolOpt (name, "", description, callback) {}
+
+
+bool BoolOpt::match (int argc, char **argv) {
+	return callback ();
+}
+
+
+unsigned int BoolOpt::numExtraArguments () {
 	return 0;
 }
 

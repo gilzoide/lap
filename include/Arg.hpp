@@ -38,9 +38,10 @@ public:
 	/**
 	 * Ctor
 	 *
+	 * @param name Argument name
 	 * @param description Argument description
 	 */
-	Arg (const string description);
+	Arg (const string& name, const string& description);
 
 	/**
 	 * Virtual dtor
@@ -53,14 +54,27 @@ public:
 	 * @param argc Number of available arguments
 	 * @param argv Available arguments
 	 *
-	 * @return Number or extra arguments consumed
+	 * @return true if ArgParser should continue to parse arguments
+	 * @return false otherwise
 	 *
-	 * @throws Exception if something went wrong (like number of extra arguments
-	 *  not met)
+	 * @throws Exception if something went wrong (like error on extra arguments)
 	 */
-	virtual int match (int argc, char **argv) = 0;
+	virtual bool match (int argc, char **argv) = 0;
 
-	/// Argument/option description
+	/**
+	 * Returns how many extra arguments Arg will consume
+	 *
+	 * This is used to know how many more arguments will be consumed, so that
+	 * ArgParser can skip them, and check if none of them are registered options
+	 *
+	 * @return Number of extra arguments consumed (if none, return 0)
+	 */
+	virtual unsigned int numExtraArguments () = 0;
+
+	/// Argument name
+	string name;
+
+	/// Argument/option description, used for help/usage
 	string description;
 };
 

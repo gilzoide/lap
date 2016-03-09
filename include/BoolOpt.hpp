@@ -28,7 +28,7 @@
 
 namespace lap {
 
-using boolOptFunc = function<void ()>;
+using boolOptFunc = function<bool ()>;
 
 /**
  * Boolean option, those who don't expect arguments itself
@@ -38,17 +38,30 @@ public:
 	/**
 	 * Ctor
 	 *
+	 * @param name Argument name
 	 * @param description Option description
+	 * @param alias Option alias
 	 * @param callback Function to be called when option is matched
 	 */
-	BoolOpt (const string& description, boolOptFunc callback,
-			const string& alias = "");
+	BoolOpt (const string& name, const string& description, const string& alias,
+			boolOptFunc callback);
+	/**
+	 * Ctor overload without alias
+	 */
+	BoolOpt (const string& name, const string& description,
+			boolOptFunc callback);
 	
 	/**
 	 * There was a match: call callback
 	 */
-	int match (int argc, char **argv) override;
+	bool match (int argc, char **argv) override;
 
+	/**
+	 * Boolean option: no extra option required
+	 *
+	 * @return 0
+	 */
+	unsigned int numExtraArguments () override;
 
 	/**
 	 * Callback to be called when option is found

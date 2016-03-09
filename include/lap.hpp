@@ -17,14 +17,10 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <Arg.hpp>
+/** @file lap.hpp
+ * Header that users should include in their programs
+ */
+#pragma once
 
-namespace lap {
-	
-Arg::Arg (const string& name, const string& description)
-		: name (name), description (description) {}
-
-
-Arg::~Arg () {}
-
-}
+#include <ArgParser.hpp>
+#include <Exception.hpp>

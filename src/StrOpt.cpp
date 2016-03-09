@@ -21,13 +21,22 @@
 
 namespace lap {
 
-StrOpt::StrOpt (const string& description, int n,
-		strOptFunc callback, const string& alias)
-		: Opt (description, alias), n (n), callback (callback) {}
+StrOpt::StrOpt (const string& name, const string& alias,
+		const string& description, int n, strOptFunc callback)
+		: Opt (name, alias, description), n (n), callback (callback) {}
 
 
-int StrOpt::match (int argc, char **argv) {
-	return -1;
+StrOpt::StrOpt (const string& name, const string& description, int n,
+			strOptFunc callback) : StrOpt (name, "", description, n, callback) {}
+
+
+bool StrOpt::match (int argc, char **argv) {
+	vector<const char *> v (argv, argv + n);
+	return callback (move (v));
+}
+
+unsigned int StrOpt::numExtraArguments () {
+	return n;
 }
 
 }

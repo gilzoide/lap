@@ -67,7 +67,7 @@ public:
 	vector<const char *> parse (int argc, char **argv);
 
 	/**
-	 * Expect a BoolArg, with custom description and no argument callback
+	 * Expect a BoolOpt, with custom description and no argument callback
 	 *
 	 * @warning Option string doesn't include "-" or "--" or "/", do it on your
 	 *  own
@@ -77,11 +77,16 @@ public:
 	 * @param callback Function called when option is matched
 	 * @param optionAlias Option alias
 	 */
+	void expect (const string& option, const string& optionAlias,
+			const string& description, boolOptFunc callback);
+	/**
+	 * Expect BoolOpt overload without option alias
+	 */
 	void expect (const string& option, const string& description,
-			boolOptFunc callback, const string& optionAlias = "");
+			boolOptFunc callback);
 
 	/**
-	 * Expect a StrArg, with custom description and N argument callback
+	 * Expect a StrOpt, with custom description and N argument callback
 	 *
 	 * @warning Option string doesn't include "-" or "--" or "/", do it on your
 	 *  own
@@ -92,8 +97,13 @@ public:
 	 * @param callback Function called when option is matched
 	 * @param optionAlias Option alias
 	 */
+	void expect (const string& option, const string& optionAlias,
+			const string& description, int n, strOptFunc callback);
+	/**
+	 * Expect StrOpt overload without option alias
+	 */
 	void expect (const string& option, const string& description, int n,
-			strOptFunc callback, const string& optionAlias = "");
+			strOptFunc callback);
 
 private:
 	/**
