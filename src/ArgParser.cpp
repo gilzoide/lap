@@ -18,7 +18,7 @@
  */
 
 #include <ArgParser.hpp>
-#include <Exception.hpp>
+#include <debug.hpp>
 
 #include <iostream>
 
@@ -62,10 +62,12 @@ void ArgParser::expect (const string& option, const string& description,
 
 
 void ArgParser::expect (const string& option, const string& optionAlias,
-			const string& description, int n, strOptFunc callback) {
+			const string& description, unsigned int n,
+			initializer_list<string> argNames, strOptFunc callback) {
 	if (!option.empty ()) {
 		// create StrArg and insert it
-		auto newArg = new StrOpt (option, optionAlias, description, n, callback);
+		auto newArg = new StrOpt (option, optionAlias, description, n,
+				argNames, callback);
 		knownOpts.insert (make_pair (option, newArg));
 
 		// there's an alias, insert it too
@@ -77,9 +79,9 @@ void ArgParser::expect (const string& option, const string& optionAlias,
 		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
 	}
 }
-void ArgParser::expect (const string& option, const string& description, int n,
-			strOptFunc callback) {
-	expect (option, "", description, n, callback);
+void ArgParser::expect (const string& option, const string& description,
+		unsigned int n, strOptFunc callback) {
+	expect (option, "", description, n, {}, callback);
 }
 
 
@@ -99,15 +101,23 @@ vector<const char *> ArgParser::parse (int argc, char **argv) {
 			auto opt = entry->second;
 			// get how much we should advance
 			advance = opt->numExtraArguments () + 1;
+
+			// maybe there are not enough arguments
+			if (advance > argc) {
+				throw Exception ("Not enough arguments for \"" +
+						string (*argv) + "\" option");
+			}
 			for (i = 1; i < advance; i++) {
 				// if any extra argument needed is a known option, complain
 				if (knownOpts.find (argv[i]) != knownOpts.end ()) {
-					throw LAP_API_EXCEPTION ("ArgParser::parse",
-							"Not enough arguments for \"" + opt->name + "\"");
+					throw Exception ("Not enough arguments for \"" +
+							string (*argv) + "\" option");
 				}
 			}
 			// and go parse stuff. If asked to stop, do it
 			if (!opt->match (argc, argv)) {
+				// insert rest of arguments on unknownOpts (ignoring current arg)
+				unknownOpts.insert (unknownOpts.end (), argv + 1, argv + argc);
 				break;
 			}
 		}
@@ -122,6 +132,24 @@ vector<const char *> ArgParser::parse (int argc, char **argv) {
 	}
 
 	return move (unknownOpts);
+}
+
+
+void ArgParser::showHelp (const string& prefix, const string& sufix) {
+	cout << prefix << endl;
+	if (!knownOpts.empty ()) {
+		cout << "OPTIONS:" << endl;
+		for (const auto & entry : knownOpts) {
+			auto opt = entry.second;
+			if (entry.first == opt->name) {
+				// option name/alias and args (if any)
+				cout << "    " << opt->getUsage ();
+				// and description
+				cout << " : " << opt->description << endl;
+			}
+		}
+		cout << sufix << endl;
+	}
 }
 
 }

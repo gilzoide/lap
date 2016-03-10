@@ -23,12 +23,11 @@
  */
 #pragma once
 
-#include <Arg.hpp>
+#include <Opt.hpp>
 #include <BoolOpt.hpp>
 #include <StrOpt.hpp>
 
 #include <map>
-#include <functional>
 
 using namespace std;
 
@@ -91,19 +90,41 @@ public:
 	 * @warning Option string doesn't include "-" or "--" or "/", do it on your
 	 *  own
 	 *
+	 * @warning If numArgs is 0, the option won't receive any argument __EVER__
+	 *
 	 * @param option Option string
 	 * @param description Custom description, for usage printing
-	 * @param numArgs Number of needed arguments for option
+	 * @param n Number of needed arguments for option
+	 * @param argNames Names of the arguments, for documentation
 	 * @param callback Function called when option is matched
 	 * @param optionAlias Option alias
 	 */
 	void expect (const string& option, const string& optionAlias,
-			const string& description, int n, strOptFunc callback);
+			const string& description, unsigned int n,
+			initializer_list<string> argNames, strOptFunc callback);
 	/**
 	 * Expect StrOpt overload without option alias
 	 */
-	void expect (const string& option, const string& description, int n,
-			strOptFunc callback);
+	void expect (const string& option, const string& description,
+			unsigned int n, strOptFunc callback);
+
+	/**
+	 * Show argument help, based on registered options
+	 *
+	 * Message will be in the format: "
+	 * $prefix
+	 * OPTIONS:
+	 *     $option|$alias $argN... : $description
+	 *     ...
+	 * Any arguments are mandatory
+	 *
+	 * $sufix
+	 * "
+	 *
+	 * @param prefix String prefix to be written before default string
+	 * @param sufix String sufix to be written after default string
+	 */
+	void showHelp (const string& prefix, const string& sufix);
 
 private:
 	/**

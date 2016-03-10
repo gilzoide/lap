@@ -22,8 +22,6 @@
  */
 #pragma once
 
-#include <Arg.hpp>
-
 #include <string>
 
 using namespace std;
@@ -35,14 +33,14 @@ namespace lap {
  *
  * @note Options may have an alias (like "-h" and "--help")
  */
-class Opt : public Arg {
+class Opt {
 public:
 	/**
 	 * Ctor
 	 *
-	 * @param name Argument name
-	 * @param alias Opt alias
-	 * @param description Argument description
+	 * @param name Option name
+	 * @param alias Option alias
+	 * @param description Option description
 	 */
 	Opt (const string& name, const string& alias, const string& description);
 	/**
@@ -51,14 +49,45 @@ public:
 	Opt (const string& name, const string& description);
 
 	/**
-	 * Still, the match function
+	 * Virtual dtor
+	 */
+	virtual ~Opt ();
+
+	/**
+	 * Function called when there was a match
+	 *
+	 * @param argc Number of available arguments
+	 * @param argv Available arguments
+	 *
+	 * @return `true` if ArgParser should continue to parse arguments
+	 * @return `false` otherwise
+	 *
+	 * @throws Exception if something went wrong (like error on extra arguments)
 	 */
 	virtual bool match (int argc, char **argv) = 0;
 
 	/**
-	 * Still, the numExtraArguments function
+	 * Returns how many extra arguments Arg will consume
+	 *
+	 * This is used to know how many more arguments will be consumed, so that
+	 * ArgParser can skip them, and check if none of them are registered options
+	 *
+	 * @return Number of extra arguments consumed (if none, return 0)
 	 */
 	virtual unsigned int numExtraArguments () = 0;
+
+	/**
+	 * Returns a simple usage string, for documentation (like help info)
+	 *
+	 * @return Option usage string with name|alias
+	 */
+	virtual string getUsage ();
+
+	/// Option name
+	string name;
+
+	/// Option description, used for help/usage
+	string description;
 
 	/// Option alias
 	string alias;

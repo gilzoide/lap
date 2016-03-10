@@ -22,11 +22,19 @@
 namespace lap {
 
 Opt::Opt (const string& name, const string& alias, const string& description)
-		: Arg (name, description), alias (alias) {}
+		: name (name), description (description), alias (alias) {}
 
 
 Opt::Opt (const string& name, const string& description)
 		: Opt (name, "", description) {}
+
+
+Opt::~Opt () {}
+
+
+string Opt::getUsage () {
+	return name + (alias.empty () ? "" : "|" + alias);
+}
 
 }
 

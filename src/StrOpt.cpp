@@ -19,15 +19,20 @@
 
 #include <StrOpt.hpp>
 
+#include <sstream>
+
 namespace lap {
 
 StrOpt::StrOpt (const string& name, const string& alias,
-		const string& description, int n, strOptFunc callback)
-		: Opt (name, alias, description), n (n), callback (callback) {}
+		const string& description, int n, initializer_list<string> argNames,
+		strOptFunc callback)
+		: Opt (name, alias, description), n (n), argNames (argNames),
+		callback (callback) {}
 
 
 StrOpt::StrOpt (const string& name, const string& description, int n,
-			strOptFunc callback) : StrOpt (name, "", description, n, callback) {}
+		initializer_list<string> argNames, strOptFunc callback)
+		: StrOpt (name, "", description, n, argNames, callback) {}
 
 
 bool StrOpt::match (int argc, char **argv) {
@@ -35,8 +40,20 @@ bool StrOpt::match (int argc, char **argv) {
 	return callback (move (v));
 }
 
+
 unsigned int StrOpt::numExtraArguments () {
 	return n;
+}
+
+
+string StrOpt::getUsage () {
+	ostringstream os;
+	os << Opt::getUsage ();
+	// argument names
+	for (auto & arg : argNames) {
+		os << ' ' << arg;
+	}
+	return move (os.str ());
 }
 
 }

@@ -17,14 +17,22 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <Arg.hpp>
+/** @file debug.hpp
+ * Lap API exceptions, in a different header so devs don't use it explicitly
+ */
+#pragma once
 
-namespace lap {
-	
-Arg::Arg (const string& name, const string& description)
-		: name (name), description (description) {}
+#include <sstream>
+#include <Exception.hpp>
 
+using namespace std;
 
-Arg::~Arg () {}
+/// Auxiliary macro for API to tell us where the problem ocurred
+#define LAP_API_EXCEPTION(funcName, what) \
+	[&] () -> Exception { \
+		ostringstream os; \
+		os << "[lap::" << funcName << " @ " __FILE__ << ':' << __LINE__ \
+				<< "] " << what; \
+		return move (Exception (os.str ())); \
+	} ()
 
-}

@@ -7,3 +7,7 @@ build/
 
 # valgrind logs
 vgcore*
+
+# doxygen docs
+html/
+man/

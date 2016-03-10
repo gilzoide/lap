@@ -26,16 +26,36 @@ USAGE
 
 int main (int argc, char **argv) {
 	lap::ArgParser parser;
-	// boolean option (any position, no arguments
-	parser.expect ("-h", "--help", "gives some help in your life", [] {
+	//---- Boolean options (any position, no arguments) ----//
+	parser.expect ("-a", "--advice", "gives user some advice", [] {
 				std::cout << "Always indent your code!" << std::endl;
+				return true;
+			});
+	// see that it's easy to make a help option
+	parser.expect ("-h", "--help", "gives some help in your life", [&parser] {
+				parser.showHelp ("Lap README example help", "Use wisely");
+				return false;
+			});
+	// and to make a "end of options" option too
+	parser.expect ("--", "stop reading options" [] {
 				return false;
 			});
 
-	// parse method returns the unmatched arguments
-	auto remainingArgs = parser.parse (argc, argv);
-	for (auto & arg : remainingArgs) {
-		std::cout << arg << std::endl;
+	//---- String options (any position, N mandatory arguments) ----//
+	parser.expect ("-s", "--size", 2, {"width", "height"},
+			[] (vector<const char *> v) {
+				std::cout << "Window size: " << v[0] << 'x' << v[1] << std::endl;
+			});
+
+	// parse method returns the unmatched arguments (or throws exception)
+	try {
+		auto remainingArgs = parser.parse (argc, argv);
+		for (auto & arg : remainingArgs) {
+			std::cout << "Unmatched arg" << arg << std::endl;
+		}
+	}
+	catch (exception& ex) {
+		std::cerr << ex.what () << std::endl;
 	}
 	
 	return 0;

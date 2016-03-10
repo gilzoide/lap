@@ -23,21 +23,11 @@
 #pragma once
 
 #include <string>
-#include <sstream>
 #include <exception>
 
 using namespace std;
 
 namespace lap {
-
-/// Auxiliary macro for API to tell us where the problem ocurred
-#define LAP_API_EXCEPTION(funcName, what) \
-	[&] () -> Exception { \
-		ostringstream os; \
-		os << "[lap::" << funcName << " @ " __FILE__ << ':' << __LINE__ \
-				<< "] " << what << endl; \
-		return move (Exception (os.str ())); \
-	} () \
 
 /**
  * Lap's API exceptions

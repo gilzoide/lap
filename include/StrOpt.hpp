@@ -40,17 +40,20 @@ public:
 	/**
 	 * Ctor
 	 *
+	 * @param name Argument name
+	 * @param alias Option alias
 	 * @param description Option description
 	 * @param n Number of expected arguments
+	 * @param argNames Names of the arguments, for documentation
 	 * @param callback Function to be called when option is matched
 	 */
 	StrOpt (const string& name, const string& alias, const string& description,
-			int n, strOptFunc callback);
+			int n, initializer_list<string> argNames, strOptFunc callback);
 	/**
 	 * Ctor overload without alias
 	 */
 	StrOpt (const string& name, const string& description, int n,
-			strOptFunc callback);
+			initializer_list<string> argNames, strOptFunc callback);
 	
 	/**
 	 * There was a match: call callback with the following args
@@ -64,8 +67,18 @@ public:
 	 */
 	unsigned int numExtraArguments () override;
 
+	/**
+	 * Opt::getUsage function, including argument names
+	 *
+	 * @return Option with arguments usage string
+	 */
+	string getUsage () override;
+
 	/// Number of arguments expected
 	int n;
+
+	/// The argument names
+	vector<string> argNames;
 
 	/**
 	 * Callback to be called when option is found

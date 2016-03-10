@@ -28,10 +28,11 @@
 
 namespace lap {
 
+/// Boolean Option callback function: no arguments
 using boolOptFunc = function<bool ()>;
 
 /**
- * Boolean option, those who don't expect arguments itself
+ * Boolean option, those who don't expect arguments
  */
 class BoolOpt : public Opt {
 public:
@@ -59,7 +60,7 @@ public:
 	/**
 	 * Boolean option: no extra option required
 	 *
-	 * @return 0
+	 * @return `0`
 	 */
 	unsigned int numExtraArguments () override;
 
