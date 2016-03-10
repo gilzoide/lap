@@ -23,11 +23,21 @@
 #pragma once
 
 #include <string>
+#include <sstream>
 #include <exception>
 
 using namespace std;
 
 namespace lap {
+
+/// Auxiliary macro for API to tell us where the problem ocurred
+#define LAP_API_EXCEPTION(funcName, what) \
+	[&] () -> Exception { \
+		ostringstream os; \
+		os << "[lap::" << funcName << " @ " __FILE__ << ':' << __LINE__ \
+				<< "] " << what << endl; \
+		return move (Exception (os.str ())); \
+	} () \
 
 /**
  * Lap's API exceptions
@@ -37,10 +47,15 @@ public:
 	/**
 	 * Ctor
 	 *
-	 * @param function Name of the function where the Exception was created
 	 * @param what_arg Explanatory string
 	 */
-	Exception (const string& functionName, const string& what_arg);
+	Exception (const string& what_arg);
+	/**
+	 * Ctor
+	 *
+	 * @param what_arg Explanatory string
+	 */
+	Exception (const char *what_arg);
 
 	/**
 	 * Returns the explanatory string
@@ -50,8 +65,6 @@ public:
 	const char *what () const noexcept override;
 
 private:
-	/// Function name
-	string functionName;
 	/// The explanatory string
 	string what_arg;
 };

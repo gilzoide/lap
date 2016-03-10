@@ -19,19 +19,17 @@
 
 #include <Exception.hpp>
 
-#include <sstream>
-#include <cstring>
 
 namespace lap {
 
-Exception::Exception (const string& functionName, const string& what_arg)
-		: functionName (functionName), what_arg (what_arg) {}
+Exception::Exception (const string& what_arg) : what_arg (what_arg) {}
+
+
+Exception::Exception (const char *what_arg) : what_arg (what_arg) {}
 
 
 const char *Exception::what () const noexcept {
-	ostringstream os;
-	os << "[lap::" << functionName << "] " << what_arg << endl;
-	return os.str ().c_str ();
+	return what_arg.c_str ();
 }
 
 }

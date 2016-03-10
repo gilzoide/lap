@@ -4,3 +4,6 @@
 
 # build stuff
 build/
+
+# valgrind logs
+vgcore*

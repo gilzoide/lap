@@ -52,7 +52,7 @@ void ArgParser::expect (const string& option, const string& optionAlias,
 		}
 	}
 	else {
-		throw Exception ("ArgParser::expect", "Option name can't be empty!");
+		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
 	}
 }
 void ArgParser::expect (const string& option, const string& description,
@@ -74,7 +74,7 @@ void ArgParser::expect (const string& option, const string& optionAlias,
 		}
 	}
 	else {
-		throw Exception ("ArgParser::expect", "Option name can't be empty!");
+		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
 	}
 }
 void ArgParser::expect (const string& option, const string& description, int n,
@@ -102,7 +102,7 @@ vector<const char *> ArgParser::parse (int argc, char **argv) {
 			for (i = 1; i < advance; i++) {
 				// if any extra argument needed is a known option, complain
 				if (knownOpts.find (argv[i]) != knownOpts.end ()) {
-					throw Exception ("ArgParser::parse",
+					throw LAP_API_EXCEPTION ("ArgParser::parse",
 							"Not enough arguments for \"" + opt->name + "\"");
 				}
 			}
