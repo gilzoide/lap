@@ -17,7 +17,7 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <BoolOpt.hpp>
+#include "BoolOpt.hpp"
 
 namespace lap {
 

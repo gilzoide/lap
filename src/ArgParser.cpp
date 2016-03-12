@@ -17,8 +17,8 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <ArgParser.hpp>
-#include <debug.hpp>
+#include "ArgParser.hpp"
+#include "debug.hpp"
 
 #include <iostream>
 

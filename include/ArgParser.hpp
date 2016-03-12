@@ -23,9 +23,9 @@
  */
 #pragma once
 
-#include <Opt.hpp>
-#include <BoolOpt.hpp>
-#include <StrOpt.hpp>
+#include "Opt.hpp"
+#include "BoolOpt.hpp"
+#include "StrOpt.hpp"
 
 #include <map>
 
@@ -62,6 +62,9 @@ public:
 	 *
 	 * @param argc Number of arguments passed
 	 * @param argv Array of arguments
+	 *
+	 * @throw Exception if there were not enough arguments for some option
+	 * @throw Whatever callback throws
 	 */
 	vector<const char *> parse (int argc, char **argv);
 
@@ -111,7 +114,8 @@ public:
 	/**
 	 * Show argument help, based on registered options
 	 *
-	 * Message will be in the format: "
+	 * Message will be in the format:
+	 * ```
 	 * $prefix
 	 * OPTIONS:
 	 *     $option|$alias $argN... : $description
@@ -119,7 +123,7 @@ public:
 	 * Any arguments are mandatory
 	 *
 	 * $sufix
-	 * "
+	 * ```
 	 *
 	 * @param prefix String prefix to be written before default string
 	 * @param sufix String sufix to be written after default string

@@ -1,0 +1,4 @@
+return table.pack (copy {
+	input = utils.glob '*.hpp',
+	multinput = true
+})

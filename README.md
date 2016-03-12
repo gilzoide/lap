@@ -37,14 +37,15 @@ int main (int argc, char **argv) {
 				return false;
 			});
 	// and to make a "end of options" option too
-	parser.expect ("--", "stop reading options" [] {
+	parser.expect ("--", "stop reading options", [] {
 				return false;
 			});
 
 	//---- String options (any position, N mandatory arguments) ----//
-	parser.expect ("-s", "--size", 2, {"width", "height"},
+	parser.expect ("-s", "--size", "set window size", 2, {"width", "height"},
 			[] (vector<const char *> v) {
 				std::cout << "Window size: " << v[0] << 'x' << v[1] << std::endl;
+				return true;
 			});
 
 	// parse method returns the unmatched arguments (or throws exception)

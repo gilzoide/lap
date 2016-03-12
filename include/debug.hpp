@@ -22,8 +22,9 @@
  */
 #pragma once
 
+#include "Exception.hpp"
+
 #include <sstream>
-#include <Exception.hpp>
 
 using namespace std;
 

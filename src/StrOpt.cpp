@@ -17,7 +17,7 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <StrOpt.hpp>
+#include "StrOpt.hpp"
 
 #include <sstream>
 
@@ -36,6 +36,8 @@ StrOpt::StrOpt (const string& name, const string& description, int n,
 
 
 bool StrOpt::match (int argc, char **argv) {
+	// skip option name argument
+	argv++;
 	vector<const char *> v (argv, argv + n);
 	return callback (move (v));
 }

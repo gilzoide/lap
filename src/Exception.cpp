@@ -17,8 +17,7 @@
  * Any bugs should be reported to <gilzoide@gmail.com>
  */
 
-#include <Exception.hpp>
-
+#include "Exception.hpp"
 
 namespace lap {
 

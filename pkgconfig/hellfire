@@ -1,0 +1,3 @@
+return copy {
+	input = 'lap.pc'
+}

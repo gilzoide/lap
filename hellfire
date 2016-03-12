@@ -6,14 +6,23 @@ lap is the Lambda Argument Parser, a functional style C++11 library for parsing
 command line arguments
 
 Call with `hell debug=1` for a debug build (-g compiler flag)
+
+When installing, there will be the library itself (.so), headers and pkg-config
+script. Soon there will be man pages as well.
 ]]
 
 hell.outdir = 'build'
 
 -- liblap.so, global so that the test can depend on it
 liblap = feedHellFire 'src/hellfire'
+headers = feedHellFire 'include/hellfire'
+pkgconfig = feedHellFire 'pkgconfig/hellfire'
 
 -- Executable test (with main and stuff)
 feedHellFire 'test/hellfire'
 
-install (liblap, utils.makePath (prefix or hell.os.prefix, 'lib', 'lap'))
+--//-- INSTALL STUFF! --\\--
+prefix = prefix or hell.os.prefix
+install (liblap, utils.makePath (prefix, 'lib'), 644)
+install (headers, utils.makePath (prefix, 'include', 'lap'), 644)
+install (pkgconfig, utils.makePath (prefix, 'share', 'pkgconfig'), 644)
