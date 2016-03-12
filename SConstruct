@@ -17,10 +17,20 @@ Everything can be uninstalled with `scons uninstall`
 """)
 
 if not GetOption ('help'):
+    # Add prefix changing option
+    AddOption('--prefix',
+            dest = 'prefix',
+            type = 'string',
+            nargs = 1,
+            action = 'store',
+            metavar = 'DIR',
+            help = 'installation prefix')
+
     env = Environment (
         CXXFLAGS = '-Wall -pipe -O2 -std=c++11',
         CPPPATH = '#include',
-        CXX = 'g++'
+        CXX = 'g++',
+        PREFIX = GetOption ('prefix')
     )
     env.Decider ('MD5-timestamp')
 

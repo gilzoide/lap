@@ -30,11 +30,11 @@ includes = Glob ('#include/*.h')
 # pkg-config files -> *.pc
 pkgconfigs = Glob ('#pkgconfigs/*.pc')
 
-env.InstallPerm ('/usr/lib', liblap)
-env.InstallPerm ('/usr/include/mosaic', includes)
-env.InstallPerm ('/usr/share/pkgconfig', pkgconfigs)
+env.InstallPerm ('$PREFIX/usr/lib', liblap)
+env.InstallPerm ('$PREFIX/usr/include/mosaic', includes)
+env.InstallPerm ('$PREFIX/usr/share/pkgconfig', pkgconfigs)
 # targets: install{,-bin,-lib,-include}
-env.Alias ('install-lib', '/usr/lib')
-env.Alias ('install-include', '/usr/include')
-env.Alias ('install-pkgconfig', '/usr/share/pkgconfig')
+env.Alias ('install-lib', '$PREFIX/usr/lib')
+env.Alias ('install-include', '$PREFIX/usr/include')
+env.Alias ('install-pkgconfig', '$PREFIX/usr/share/pkgconfig')
 env.Alias ('install', ['install-lib', 'install-include', 'install-pkgconfig'])
