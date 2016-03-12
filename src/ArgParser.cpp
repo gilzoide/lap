@@ -39,7 +39,7 @@ ArgParser::~ArgParser () {
 }
 
 
-void ArgParser::expect (const string& option, const string& optionAlias,
+void ArgParser::registerOpt (const string& option, const string& optionAlias,
 		const string& description, boolOptFunc callback) {
 	if (!option.empty ()) {
 		// create BoolArg and insert it
@@ -55,13 +55,13 @@ void ArgParser::expect (const string& option, const string& optionAlias,
 		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
 	}
 }
-void ArgParser::expect (const string& option, const string& description,
+void ArgParser::registerOpt (const string& option, const string& description,
 			boolOptFunc callback) {
-	expect (option, "", description, callback);
+	registerOpt (option, "", description, callback);
 }
 
 
-void ArgParser::expect (const string& option, const string& optionAlias,
+void ArgParser::registerOpt (const string& option, const string& optionAlias,
 			const string& description, unsigned int n,
 			initializer_list<string> argNames, strOptFunc callback) {
 	if (!option.empty ()) {
@@ -79,9 +79,9 @@ void ArgParser::expect (const string& option, const string& optionAlias,
 		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
 	}
 }
-void ArgParser::expect (const string& option, const string& description,
+void ArgParser::registerOpt (const string& option, const string& description,
 		unsigned int n, strOptFunc callback) {
-	expect (option, "", description, n, {}, callback);
+	registerOpt (option, "", description, n, {}, callback);
 }
 
 

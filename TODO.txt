@@ -1,1 +1,1 @@
-- Refatorar pra `register` ao invés de `expect`
+- Fazer regra pra pacote deb, PKGBUILD
