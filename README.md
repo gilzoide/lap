@@ -66,4 +66,4 @@ int main (int argc, char **argv) {
 
 DOCUMENTATION
 =============
-Everything was documented using [Doxygen](doxygen.org).
+Everything was documented using [Doxygen](http://doxygen.org).
