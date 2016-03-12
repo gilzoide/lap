@@ -52,13 +52,18 @@ int main (int argc, char **argv) {
 	try {
 		auto remainingArgs = parser.parse (argc, argv);
 		for (auto & arg : remainingArgs) {
-			std::cout << "Unmatched arg" << arg << std::endl;
+			std::cout << "Unmatched arg: \"" << arg << '"' << std::endl;
 		}
 	}
-	catch (exception& ex) {
+	catch (std::exception& ex) {
 		std::cerr << ex.what () << std::endl;
 	}
 	
 	return 0;
 }
 ```
+
+
+DOCUMENTATION
+=============
+Everything was documented using [Doxygen](doxygen.org).
