@@ -11,3 +11,6 @@ vgcore*
 # doxygen docs
 html/
 man/
+
+# scons stuff
+.scons*

@@ -1,6 +1,6 @@
 hell.help = [[
-Welcome to lap build script
-===========================
+Welcome to lap hell build script
+================================
 
 lap is the Lambda Argument Parser, a functional style C++11 library for parsing
 command line arguments

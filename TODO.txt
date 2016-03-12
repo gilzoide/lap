@@ -1,2 +1,1 @@
-- Fazer script scons pra buildar
 - Refatorar pra `register` ao invés de `expect`
