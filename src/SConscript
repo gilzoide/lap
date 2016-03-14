@@ -31,7 +31,7 @@ includes = Glob ('#include/*.hpp')
 pkgconfigs = Glob ('#pkgconfig/*.pc')
 
 env.InstallPerm ('$PREFIX/usr/lib', liblap)
-env.InstallPerm ('$PREFIX/usr/include/mosaic', includes)
+env.InstallPerm ('$PREFIX/usr/include/lap', includes)
 env.InstallPerm ('$PREFIX/usr/share/pkgconfig', pkgconfigs)
 # targets: install{,-bin,-lib,-include}
 env.Alias ('install-lib', '$PREFIX/usr/lib')
