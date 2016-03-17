@@ -99,6 +99,8 @@ public:
 			const string& description, boolOptFunc callback);
 	/**
 	 * Register BoolOpt overload without option alias
+	 *
+	 * @sa registerOpt
 	 */
 	void registerOpt (const string& option, const string& description,
 			boolOptFunc callback);

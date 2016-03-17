@@ -35,7 +35,10 @@ using argVector = vector<char *>;
 /**
  * Options, that may be in any place on argv (non-positional arguments)
  *
- * @note Options may have an alias (like "-h" and "--help")
+ * Options may have an alias (like "-h" and "--help")
+ *
+ * @warning Option name/alias don't include "-" or "--" or "/" for default,
+ *  so if you want them, do it on your own
  */
 class Opt {
 public:
@@ -49,6 +52,8 @@ public:
 	Opt (const string& name, const string& alias, const string& description);
 	/**
 	 * Ctor overload without alias
+	 *
+	 * @sa Opt::Opt
 	 */
 	Opt (const string& name, const string& description);
 

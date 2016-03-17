@@ -43,7 +43,7 @@ int main (int argc, char **argv) {
 
 	//---- String options (any position, N mandatory arguments) ----//
 	parser.registerOpt ("-s", "--size", "set window size", 2, {"width", "height"},
-			[] (vector<const char *> v) {
+			[] (lap::argVector v) {
 				std::cout << "Window size: " << v[0] << 'x' << v[1] << std::endl;
 				return true;
 			});
