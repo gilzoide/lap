@@ -53,7 +53,7 @@ public:
 	ArgParser ();
 
 	/**
-	 * Dtor: delete Opts
+	 * Dtor: delete known Opts
 	 */
 	~ArgParser ();
 
@@ -63,10 +63,26 @@ public:
 	 * @param argc Number of arguments passed
 	 * @param argv Array of arguments
 	 *
+	 * @return Vector with the unmatched arguments (including program name)
+	 *
 	 * @throw Exception if there were not enough arguments for some option
 	 * @throw Whatever callback throws
 	 */
-	vector<const char *> parse (int argc, char **argv);
+	argVector parse (int argc, char **argv);
+	/**
+	 * Parse the command line options, excluding matched options from args
+	 *
+	 * @note This function is well suited to those who already have some
+	 *  'argc + argv' logic and don't want to use a vector
+	 * @note This method calls @ref parse inside, so params and exceptions are
+	 *  the same
+	 *
+	 * @param argc Number of arguments passed
+	 * @param argv Array of arguments
+	 *
+	 * @sa parse
+	 */
+	void parseAndRemove (int& argc, char **& argv);
 
 	/**
 	 * Register a BoolOpt, with custom description and no argument callback
@@ -92,7 +108,6 @@ public:
 	 *
 	 * @warning Option string doesn't include "-" or "--" or "/", do it on your
 	 *  own
-	 *
 	 * @warning If numArgs is 0, the option won't receive any argument __EVER__
 	 *
 	 * @param option Option string

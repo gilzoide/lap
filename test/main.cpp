@@ -2,9 +2,10 @@
 #include <iostream>
 
 using namespace std;
+using namespace lap;
 
 int main (int argc, char **argv) {
-	lap::ArgParser parser;
+	ArgParser parser;
 	//---- Boolean options (any position, no arguments) ----//
 	parser.registerOpt ("-a", "--advice", "gives user some advice", [] {
 				cout << "Always indent your code!" << endl;
@@ -22,7 +23,7 @@ int main (int argc, char **argv) {
 
 	//---- String options (any position, N mandatory arguments) ----//
 	parser.registerOpt ("-s", "--size", "set window size", 2, {"width", "height"},
-			[] (vector<const char *> v) {
+			[] (argVector v) {
 				try {
 					cout << "Window size: " << stoi (v[0]) << 'x' << stoi (v[1]) << endl;
 				}
@@ -34,9 +35,15 @@ int main (int argc, char **argv) {
 
 	// parse method returns the unmatched arguments (or throws exception)
 	try {
+		// try value method
 		auto remainingArgs = parser.parse (argc, argv);
 		for (auto & arg : remainingArgs) {
 			cout << "Unmatched arg: \"" << arg << '"' << endl;
+		}
+		// try reference method
+		parser.parseAndRemove (argc, argv);
+		for (int i = 0; i < argc; i++) {
+			cout << "Unmatched arg: \"" << argv[i] << '"' << endl;
 		}
 	}
 	catch (exception& ex) {

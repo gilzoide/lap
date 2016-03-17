@@ -23,10 +23,14 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
 namespace lap {
+
+/// Argument vector, for StrOpt callbacks to receive
+using argVector = vector<char *>;
 
 /**
  * Options, that may be in any place on argv (non-positional arguments)

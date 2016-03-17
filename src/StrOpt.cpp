@@ -38,7 +38,7 @@ StrOpt::StrOpt (const string& name, const string& description, int n,
 bool StrOpt::match (int argc, char **argv) {
 	// skip option name argument
 	argv++;
-	vector<const char *> v (argv, argv + n);
+	argVector v (argv, argv + n);
 	return callback (move (v));
 }
 

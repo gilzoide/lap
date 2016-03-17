@@ -21,6 +21,7 @@
 #include "debug.hpp"
 
 #include <iostream>
+#include <algorithm>
 
 using namespace std;
 
@@ -86,9 +87,9 @@ void ArgParser::registerOpt (const string& option, const string& description,
 
 
 
-vector<const char *> ArgParser::parse (int argc, char **argv) {
+argVector ArgParser::parse (int argc, char **argv) {
 	// a vector to store the unknown options
-	vector<const char *> unknownOpts;
+	argVector unknownOpts;
 	// how many args will we advance each time
 	unsigned int advance;
 	unsigned int i;
@@ -132,6 +133,11 @@ vector<const char *> ArgParser::parse (int argc, char **argv) {
 	}
 
 	return move (unknownOpts);
+}
+void ArgParser::parseAndRemove (int& argc, char **& argv) {
+	auto unknownOpts = parse (argc, argv);
+	argc = unknownOpts.size ();
+	move (unknownOpts.begin (), unknownOpts.end (), argv);
 }
 
 

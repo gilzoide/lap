@@ -25,12 +25,11 @@
 #include "Opt.hpp"
 
 #include <functional>
-#include <vector>
 
 namespace lap {
 
 /// String Option callback function: expects it's N arguments on a vector
-using strOptFunc = function<bool (vector <const char *>)>;
+using strOptFunc = function<bool (argVector)>;
 
 /**
  * String option, those who expect N arguments
