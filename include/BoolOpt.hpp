@@ -44,7 +44,7 @@ public:
 	 * @param alias Option alias
 	 * @param callback Function to be called when option is matched
 	 */
-	BoolOpt (const string& name, const string& description, const string& alias,
+	BoolOpt (const string& name, const string& alias, const string& description,
 			boolOptFunc callback);
 	/**
 	 * Ctor overload without alias

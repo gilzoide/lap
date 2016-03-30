@@ -21,6 +21,7 @@
 #include "debug.hpp"
 
 #include <iostream>
+#include <iomanip>
 #include <algorithm>
 
 using namespace std;
@@ -53,7 +54,7 @@ void ArgParser::registerOpt (const string& option, const string& optionAlias,
 		}
 	}
 	else {
-		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
+		throw LAP_API_EXCEPTION ("ArgParser::registerOpt", "Option name can't be empty!");
 	}
 }
 void ArgParser::registerOpt (const string& option, const string& description,
@@ -77,12 +78,12 @@ void ArgParser::registerOpt (const string& option, const string& optionAlias,
 		}
 	}
 	else {
-		throw LAP_API_EXCEPTION ("ArgParser::expect", "Option name can't be empty!");
+		throw LAP_API_EXCEPTION ("ArgParser::registerOpt", "Option name can't be empty!");
 	}
 }
 void ArgParser::registerOpt (const string& option, const string& description,
-		unsigned int n, strOptFunc callback) {
-	registerOpt (option, "", description, n, {}, callback);
+		unsigned int n, initializer_list<string> argNames, strOptFunc callback) {
+	registerOpt (option, "", description, n, argNames, callback);
 }
 
 
@@ -103,18 +104,27 @@ argVector ArgParser::parse (int argc, char **argv) {
 			// get how much we should advance
 			advance = opt->numExtraArguments () + 1;
 
+// MACRO that throws the "not enough arguments" exception, used so that the
+// message is the same either when there are no arguments or any of them is a
+// known option
+#define COMPLAIN_NOT_ENOUGH_ARGUMENTS(found) \
+	ostringstream os; \
+	os << "Not enough arguments for \"" << *argv << "\" option : " << \
+			advance - 1 << " expected, found " << found; \
+	throw Exception (os.str ())
+
 			// maybe there are not enough arguments
 			if (advance > argc) {
-				throw Exception ("Not enough arguments for \"" +
-						string (*argv) + "\" option");
+				COMPLAIN_NOT_ENOUGH_ARGUMENTS (argc - 1);
 			}
 			for (i = 1; i < advance; i++) {
 				// if any extra argument needed is a known option, complain
 				if (knownOpts.find (argv[i]) != knownOpts.end ()) {
-					throw Exception ("Not enough arguments for \"" +
-							string (*argv) + "\" option");
+					COMPLAIN_NOT_ENOUGH_ARGUMENTS (i - 1);
 				}
 			}
+#undef COMPLAIN_NOT_ENOUGH_ARGUMENTS
+
 			// and go parse stuff. If asked to stop, do it
 			if (!opt->match (argc, argv)) {
 				// insert rest of arguments on unknownOpts (ignoring current arg)
@@ -149,9 +159,9 @@ void ArgParser::showHelp (const string& prefix, const string& sufix) {
 			auto opt = entry.second;
 			if (entry.first == opt->name) {
 				// option name/alias and args (if any)
-				cout << "    " << opt->getUsage ();
+				cout << "    " << left << setw (39) << opt->getUsage ();
 				// and description
-				cout << " : " << opt->description << endl;
+				cout << ' ' << opt->description << endl;
 			}
 		}
 		cout << sufix << endl;

@@ -1,13 +1,16 @@
+local exeName = 'main'
+
 build {
 	input = 'main.cpp',
+	output = exeName,
 	std = 'c++11',
 	includes = '../include',
+	libDirs = hell.outdir,
 	links = 'lap',
-	libDirs = '../build',
 	deps = {liblap}
 }
 
 exclusiveTarget ('run', command {
-	command = 'LD_LIBRARY_PATH=' .. hell.outdir .. ' build/main',
+	command = 'LD_LIBRARY_PATH=' .. hell.outdir .. ' ' .. utils.makePath (hell.outdir, exeName),
 	args = arg
 })

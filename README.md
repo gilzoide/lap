@@ -48,11 +48,18 @@ int main (int argc, char **argv) {
 				return true;
 			});
 
-	// parse method returns the unmatched arguments (or throws exception)
 	try {
+		// parse method returns the unmatched arguments (or throws exception)
 		auto remainingArgs = parser.parse (argc, argv);
 		for (auto & arg : remainingArgs) {
 			std::cout << "Unmatched arg: \"" << arg << '"' << std::endl;
+		}
+
+		std::cout << std::endl;
+		// parseAndRemove returns unmatched arguments in argc and argv
+		parser.parseAndRemove (argc, argv);
+		for (int i = 0; i < argc; i++) {
+			std::cout << "Unmatched arg: \"" << argv[i] << '"' << std::endl;
 		}
 	}
 	catch (std::exception& ex) {

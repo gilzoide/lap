@@ -40,6 +40,8 @@ int main (int argc, char **argv) {
 		for (auto & arg : remainingArgs) {
 			cout << "Unmatched arg: \"" << arg << '"' << endl;
 		}
+
+		cout << endl;
 		// try reference method
 		parser.parseAndRemove (argc, argv);
 		for (int i = 0; i < argc; i++) {

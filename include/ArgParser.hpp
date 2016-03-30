@@ -126,7 +126,7 @@ public:
 	 * Expect StrOpt overload without option alias
 	 */
 	void registerOpt (const string& option, const string& description,
-			unsigned int n, strOptFunc callback);
+			unsigned int n, initializer_list<string> argNames, strOptFunc callback);
 
 	/**
 	 * Show argument help, based on registered options
