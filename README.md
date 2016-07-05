@@ -20,55 +20,67 @@ USAGE
 5. Use remaining args, if needed
 6. Compile with `-std=c++11` and `-llap` or `$(pkg-config --libs lap)`
 
+
+EXAMPLE
+-------
+
 ```cpp
-#include <lap/lap.hpp>
+#include <lap.hpp>
 #include <iostream>
 
+using namespace std;
+using namespace lap;
+
 int main (int argc, char **argv) {
-	lap::ArgParser parser;
-	//---- Boolean options (any position, no arguments) ----//
-	parser.registerOpt ("-a", "--advice", "gives user some advice", [] {
-				std::cout << "Always indent your code!" << std::endl;
-				return true;
+	ArgParser parser;
+	//----    Boolean options (any position, no arguments)    ----//
+	parser.on ("-a", "--advice", "gives user some advice", [] {
+				cout << "Always indent your code!" << endl;
 			});
+
 	// see that it's easy to make a help option
-	parser.registerOpt ("-h", "--help", "gives some help in your life", [&parser] {
+	parser.stopOn ("-h", "--help", "gives some help in your life", [&parser] {
 				parser.showHelp ("Lap README example help", "Use wisely");
-				return false;
 			});
+
 	// and to make a "end of options" option too
-	parser.registerOpt ("--", "stop reading options", [] {
-				return false;
+	parser.stopOn ("--", "stop reading options", [] {});
+
+	//----    String options (any position, N mandatory arguments)    ----//
+	parser.on ("-s", "--size", "set window size", 2, {"width", "height"},
+			[] (argVector v) {
+				try {
+					cout << "Window size: " << stoi (v[0]) << 'x' << stoi (v[1]) << endl;
+				}
+				catch (exception& ex) {
+					throw;
+				}
 			});
 
-	//---- String options (any position, N mandatory arguments) ----//
-	parser.registerOpt ("-s", "--size", "set window size", 2, {"width", "height"},
-			[] (lap::argVector v) {
-				std::cout << "Window size: " << v[0] << 'x' << v[1] << std::endl;
-				return true;
-			});
-
+	// parse method returns the unmatched arguments (or throws exception)
 	try {
-		// parse method returns the unmatched arguments (or throws exception)
+		// try value method
 		auto remainingArgs = parser.parse (argc, argv);
 		for (auto & arg : remainingArgs) {
-			std::cout << "Unmatched arg: \"" << arg << '"' << std::endl;
+			cout << "Unmatched arg: \"" << arg << '"' << endl;
 		}
 
-		std::cout << std::endl;
-		// parseAndRemove returns unmatched arguments in argc and argv
+		cout << endl;
+		// try reference method
 		parser.parseAndRemove (argc, argv);
 		for (int i = 0; i < argc; i++) {
-			std::cout << "Unmatched arg: \"" << argv[i] << '"' << std::endl;
+			cout << "Unmatched arg: \"" << argv[i] << '"' << endl;
 		}
 	}
-	catch (std::exception& ex) {
-		std::cerr << ex.what () << std::endl;
+	catch (exception& ex) {
+		cerr << "ArgParse error: " << ex.what () << endl;
 	}
 	
 	return 0;
 }
 ```
+
+Doubts? Read the [Tutorial](tutorial.md)
 
 
 DOCUMENTATION

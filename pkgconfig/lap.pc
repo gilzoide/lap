@@ -3,7 +3,7 @@ includedir=${prefix}/include/lap
 libdir=${prefix}/lib
 
 Name: lap
-Description: lap, a functional style C++11 library for parsing command line arguments
+Description: A functional style C++11 library for parsing command line arguments
 Version: 0.1.0
 Cflags: -I${includedir}
 Libs: -L${libdir} -llap

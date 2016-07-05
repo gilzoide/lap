@@ -24,22 +24,22 @@
 namespace lap {
 
 StrOpt::StrOpt (const string& name, const string& alias,
-		const string& description, int n, initializer_list<string> argNames,
-		strOptFunc callback)
-		: Opt (name, alias, description), n (n), argNames (argNames),
+		const string& description, bool stop, int n,
+		initializer_list<string> argNames, strOptFunc callback)
+		: Opt (name, alias, description, stop), n (n), argNames (argNames),
 		callback (callback) {}
 
 
-StrOpt::StrOpt (const string& name, const string& description, int n,
+StrOpt::StrOpt (const string& name, const string& description, bool stop, int n,
 		initializer_list<string> argNames, strOptFunc callback)
-		: StrOpt (name, "", description, n, argNames, callback) {}
+		: StrOpt (name, "", description, stop, n, argNames, callback) {}
 
 
-bool StrOpt::match (int argc, char **argv) {
+void StrOpt::match (int argc, char **argv) {
 	// skip option name argument
 	argv++;
 	argVector v (argv, argv + n);
-	return callback (move (v));
+	callback (move (v));
 }
 
 

@@ -48,14 +48,16 @@ public:
 	 * @param name Option name
 	 * @param alias Option alias
 	 * @param description Option description
+	 * @param stop Should option match stop the argument parsing?
 	 */
-	Opt (const string& name, const string& alias, const string& description);
+	Opt (const string& name, const string& alias, const string& description,
+			bool stop);
 	/**
 	 * Ctor overload without alias
 	 *
 	 * @sa Opt::Opt
 	 */
-	Opt (const string& name, const string& description);
+	Opt (const string& name, const string& description, bool stop);
 
 	/**
 	 * Virtual dtor
@@ -73,7 +75,7 @@ public:
 	 *
 	 * @throws Exception if something went wrong (like error on extra arguments)
 	 */
-	virtual bool match (int argc, char **argv) = 0;
+	virtual void match (int argc, char **argv) = 0;
 
 	/**
 	 * Returns how many extra arguments Arg will consume
@@ -100,6 +102,9 @@ public:
 
 	/// Option alias
 	string alias;
+
+	/// Should option match stop the argument parsing?
+	bool stop;
 };
 
 }

@@ -95,14 +95,37 @@ public:
 	 * @param callback Function called when option is matched
 	 * @param optionAlias Option alias
 	 */
-	void registerOpt (const string& option, const string& optionAlias,
+	void on (const string& option, const string& optionAlias,
 			const string& description, boolOptFunc callback);
 	/**
 	 * Register BoolOpt overload without option alias
 	 *
-	 * @sa registerOpt
+	 * @sa on
 	 */
-	void registerOpt (const string& option, const string& description,
+	void on (const string& option, const string& description,
+			boolOptFunc callback);
+
+	/**
+	 * Register a BoolOpt, with custom description and no argument callback,
+	 * stopping parse after match
+	 *
+	 * @warning Option string doesn't include "-" or "--" or "/", do it on your
+	 *  own
+	 *
+	 * @param option Option string
+	 * @param description Custom description, for usage printing
+	 * @param callback Function called when option is matched
+	 * @param optionAlias Option alias
+	 */
+	void stopOn (const string& option, const string& optionAlias,
+			const string& description, boolOptFunc callback);
+	/**
+	 * Register BoolOpt overload without option alias, stopping parse after
+	 * match
+	 *
+	 * @sa stopOn
+	 */
+	void stopOn (const string& option, const string& description,
 			boolOptFunc callback);
 
 	/**
@@ -119,13 +142,37 @@ public:
 	 * @param callback Function called when option is matched
 	 * @param optionAlias Option alias
 	 */
-	void registerOpt (const string& option, const string& optionAlias,
+	void on (const string& option, const string& optionAlias,
 			const string& description, unsigned int n,
 			initializer_list<string> argNames, strOptFunc callback);
 	/**
-	 * Expect StrOpt overload without option alias
+	 * Register StrOpt overload without option alias
 	 */
-	void registerOpt (const string& option, const string& description,
+	void on (const string& option, const string& description,
+			unsigned int n, initializer_list<string> argNames, strOptFunc callback);
+
+	/**
+	 * Register a StrOpt, with custom description and N argument callback,
+	 * stopping parse after match
+	 *
+	 * @warning Option string doesn't include "-" or "--" or "/", do it on your
+	 *  own
+	 * @warning If numArgs is 0, the option won't receive any argument __EVER__
+	 *
+	 * @param option Option string
+	 * @param description Custom description, for usage printing
+	 * @param n Number of needed arguments for option
+	 * @param argNames Names of the arguments, for documentation
+	 * @param callback Function called when option is matched
+	 * @param optionAlias Option alias
+	 */
+	void stopOn (const string& option, const string& optionAlias,
+			const string& description, unsigned int n,
+			initializer_list<string> argNames, strOptFunc callback);
+	/**
+	 * Register StrOpt overload without option alias, stopping parse after match
+	 */
+	void stopOn (const string& option, const string& description,
 			unsigned int n, initializer_list<string> argNames, strOptFunc callback);
 
 	/**
@@ -152,6 +199,18 @@ private:
 	 * A map of the registered arguments
 	 */
 	OptMap knownOpts;
+
+	/**
+	 * Register of BoolOpts, private for 'stop' abstraction
+	 */
+	void registerOpt (const string& option, const string& optionAlias,
+		const string& description, bool stop, boolOptFunc callback);
+	/**
+	 * Register of StrOpts, private for 'stop' abstraction
+	 */
+	void registerOpt (const string& option, const string& optionAlias,
+			const string& description, bool stop, unsigned int n,
+			initializer_list<string> argNames, strOptFunc callback);
 };
 
 }

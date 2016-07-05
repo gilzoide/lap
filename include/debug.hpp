@@ -34,6 +34,6 @@ using namespace std;
 		ostringstream os; \
 		os << "[lap::" << funcName << " @ " __FILE__ << ':' << __LINE__ \
 				<< "] " << what; \
-		return move (Exception (os.str ())); \
+		return move (Exception (move (os.str ()))); \
 	} ()
 

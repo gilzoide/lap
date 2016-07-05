@@ -29,7 +29,7 @@
 namespace lap {
 
 /// String Option callback function: expects it's N arguments on a vector
-using strOptFunc = function<bool (argVector)>;
+using strOptFunc = function<void (argVector)>;
 
 /**
  * String option, those who expect N arguments
@@ -42,22 +42,24 @@ public:
 	 * @param name Argument name
 	 * @param alias Option alias
 	 * @param description Option description
+	 * @param stop Should option match stop the argument parsing?
 	 * @param n Number of expected arguments
 	 * @param argNames Names of the arguments, for documentation
 	 * @param callback Function to be called when option is matched
 	 */
 	StrOpt (const string& name, const string& alias, const string& description,
-			int n, initializer_list<string> argNames, strOptFunc callback);
+			bool stop, int n, initializer_list<string> argNames,
+			strOptFunc callback);
 	/**
 	 * Ctor overload without alias
 	 */
-	StrOpt (const string& name, const string& description, int n,
+	StrOpt (const string& name, const string& description, bool stop, int n,
 			initializer_list<string> argNames, strOptFunc callback);
 	
 	/**
 	 * There was a match: call callback with the following args
 	 */
-	bool match (int argc, char **argv) override;
+	void match (int argc, char **argv) override;
 
 	/**
 	 * Extra arguments expected

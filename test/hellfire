@@ -5,7 +5,7 @@ build {
 	output = exeName,
 	std = 'c++11',
 	includes = '../include',
-	libDirs = hell.outdir,
+	libDirs = '../' .. hell.outdir,
 	links = 'lap',
 	deps = {liblap}
 }

@@ -21,12 +21,13 @@
 
 namespace lap {
 
-Opt::Opt (const string& name, const string& alias, const string& description)
-		: name (name), description (description), alias (alias) {}
+Opt::Opt (const string& name, const string& alias, const string& description,
+		bool stop)
+		: name (name), description (description), alias (alias), stop (stop) {}
 
 
-Opt::Opt (const string& name, const string& description)
-		: Opt (name, "", description) {}
+Opt::Opt (const string& name, const string& description, bool stop)
+		: Opt (name, "", description, stop) {}
 
 
 Opt::~Opt () {}

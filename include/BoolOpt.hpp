@@ -29,7 +29,7 @@
 namespace lap {
 
 /// Boolean Option callback function: no arguments
-using boolOptFunc = function<bool ()>;
+using boolOptFunc = function<void ()>;
 
 /**
  * Boolean option, those who don't expect arguments
@@ -42,20 +42,21 @@ public:
 	 * @param name Argument name
 	 * @param description Option description
 	 * @param alias Option alias
+	 * @param stop Should option match stop the argument parsing?
 	 * @param callback Function to be called when option is matched
 	 */
 	BoolOpt (const string& name, const string& alias, const string& description,
-			boolOptFunc callback);
+			bool stop, boolOptFunc callback);
 	/**
 	 * Ctor overload without alias
 	 */
-	BoolOpt (const string& name, const string& description,
+	BoolOpt (const string& name, const string& description, bool stop,
 			boolOptFunc callback);
 	
 	/**
 	 * There was a match: call callback
 	 */
-	bool match (int argc, char **argv) override;
+	void match (int argc, char **argv) override;
 
 	/**
 	 * Boolean option: no extra option required

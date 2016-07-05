@@ -22,15 +22,16 @@
 namespace lap {
 
 BoolOpt::BoolOpt (const string& name, const string& alias,
-		const string& description, boolOptFunc callback)
-		: Opt (name, alias, description), callback (callback) {}
+		const string& description, bool stop, boolOptFunc callback)
+		: Opt (name, alias, description, stop), callback (callback) {}
 
 
-BoolOpt::BoolOpt (const string& name, const string& description,
-		boolOptFunc callback) : BoolOpt (name, "", description, callback) {}
+BoolOpt::BoolOpt (const string& name, const string& description, bool stop,
+		boolOptFunc callback)
+		: BoolOpt (name, "", description, stop, callback) {}
 
 
-bool BoolOpt::match (int argc, char **argv) {
+void BoolOpt::match (int argc, char **argv) {
 	return callback ();
 }
 

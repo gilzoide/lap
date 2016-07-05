@@ -32,7 +32,7 @@ ArgParser::ArgParser () {}
 
 
 ArgParser::~ArgParser () {
-	// delete all Opt pointers
+	// delete all Opt pointers but the aliases
 	for (auto & opt : knownOpts) {
 		if (opt.first != opt.second->alias) {
 			delete opt.second;
@@ -41,11 +41,36 @@ ArgParser::~ArgParser () {
 }
 
 
-void ArgParser::registerOpt (const string& option, const string& optionAlias,
+//----    BoolOpt    ----//
+// Don't stop
+void ArgParser::on (const string& option, const string& description,
+		boolOptFunc callback) {
+	on (option, "", description, callback);
+}
+void ArgParser::on (const string& option, const string& optionAlias,
 		const string& description, boolOptFunc callback) {
+	registerOpt (option, optionAlias, description, false, callback);
+}
+
+
+// Stop
+void ArgParser::stopOn (const string& option, const string& description,
+		boolOptFunc callback) {
+	on (option, "", description, callback);
+}
+void ArgParser::stopOn (const string& option, const string& optionAlias,
+		const string& description, boolOptFunc callback) {
+	registerOpt (option, optionAlias, description, true, callback);
+}
+
+
+// Register, the common (and abstracted away) thing
+void ArgParser::registerOpt (const string& option, const string& optionAlias,
+		const string& description, bool stop, boolOptFunc callback) {
 	if (!option.empty ()) {
 		// create BoolArg and insert it
-		auto newArg = new BoolOpt (option, optionAlias, description, callback);
+		auto newArg = new BoolOpt (option, optionAlias, description, stop,
+				callback);
 		knownOpts.insert (make_pair (option, newArg));
 
 		// there's an alias, insert it too
@@ -54,21 +79,43 @@ void ArgParser::registerOpt (const string& option, const string& optionAlias,
 		}
 	}
 	else {
-		throw LAP_API_EXCEPTION ("ArgParser::registerOpt", "Option name can't be empty!");
+		throw LAP_API_EXCEPTION ("ArgParser::on", "Option name can't be empty!");
 	}
 }
-void ArgParser::registerOpt (const string& option, const string& description,
-			boolOptFunc callback) {
-	registerOpt (option, "", description, callback);
+
+
+//----    StrOpt    ----//
+// Don't stop
+void ArgParser::on (const string& option, const string& description,
+		unsigned int n, initializer_list<string> argNames, strOptFunc callback) {
+	on (option, "", description, n, argNames, callback);
+}
+void ArgParser::on (const string& option, const string& optionAlias,
+		const string& description, unsigned int n,
+		initializer_list<string> argNames, strOptFunc callback) {
+	registerOpt (option, optionAlias, description, false, n, argNames, callback);
 }
 
 
+// Stop
+void ArgParser::stopOn (const string& option, const string& description,
+		unsigned int n, initializer_list<string> argNames, strOptFunc callback) {
+	stopOn (option, "", description, n, argNames, callback);
+}
+void ArgParser::stopOn (const string& option, const string& optionAlias,
+		const string& description, unsigned int n,
+		initializer_list<string> argNames, strOptFunc callback) {
+	registerOpt (option, optionAlias, description, true, n, argNames, callback);
+}
+
+
+// Register, the common (and abstracted away) thing
 void ArgParser::registerOpt (const string& option, const string& optionAlias,
-			const string& description, unsigned int n,
-			initializer_list<string> argNames, strOptFunc callback) {
+		const string& description, bool stop, unsigned int n,
+		initializer_list<string> argNames, strOptFunc callback) {
 	if (!option.empty ()) {
 		// create StrArg and insert it
-		auto newArg = new StrOpt (option, optionAlias, description, n,
+		auto newArg = new StrOpt (option, optionAlias, description, stop, n,
 				argNames, callback);
 		knownOpts.insert (make_pair (option, newArg));
 
@@ -78,12 +125,8 @@ void ArgParser::registerOpt (const string& option, const string& optionAlias,
 		}
 	}
 	else {
-		throw LAP_API_EXCEPTION ("ArgParser::registerOpt", "Option name can't be empty!");
+		throw LAP_API_EXCEPTION ("ArgParser::on", "Option name can't be empty!");
 	}
-}
-void ArgParser::registerOpt (const string& option, const string& description,
-		unsigned int n, initializer_list<string> argNames, strOptFunc callback) {
-	registerOpt (option, "", description, n, argNames, callback);
 }
 
 
@@ -126,7 +169,8 @@ argVector ArgParser::parse (int argc, char **argv) {
 #undef COMPLAIN_NOT_ENOUGH_ARGUMENTS
 
 			// and go parse stuff. If asked to stop, do it
-			if (!opt->match (argc, argv)) {
+			opt->match (argc, argv);
+			if (opt->stop) {
 				// insert rest of arguments on unknownOpts (ignoring current arg)
 				unknownOpts.insert (unknownOpts.end (), argv + 1, argv + argc);
 				break;
