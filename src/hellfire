@@ -3,5 +3,5 @@ return cpp.shared {
 	output = 'liblap.so',
 	std = 'c++11',
 	includes = '../include',
-	flags = debug == '1' and '&-g' or ''
+	flags = Debug == '1' and '&-g' or ''
 }

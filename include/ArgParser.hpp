@@ -27,7 +27,7 @@
 #include "BoolOpt.hpp"
 #include "StrOpt.hpp"
 
-#include <map>
+#include <unordered_map>
 
 using namespace std;
 
@@ -37,7 +37,7 @@ namespace lap {
  * How to store the expected options
  * @note With this construction, we can have option aliases
  */
-using OptMap = map<string, Opt *>;
+using OptMap = unordered_map<string, Opt *>;
 
 
 /**
@@ -65,7 +65,7 @@ public:
 	 *
 	 * @return Vector with the unmatched arguments (including program name)
 	 *
-	 * @throw Exception if there were not enough arguments for some option
+	 * @throw lap::Exception if there were not enough arguments for some option
 	 * @throw Whatever callback throws
 	 */
 	argVector parse (int argc, char **argv);

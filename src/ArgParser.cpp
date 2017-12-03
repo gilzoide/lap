@@ -56,7 +56,7 @@ void ArgParser::on (const string& option, const string& optionAlias,
 // Stop
 void ArgParser::stopOn (const string& option, const string& description,
 		boolOptFunc callback) {
-	on (option, "", description, callback);
+	stopOn (option, "", description, callback);
 }
 void ArgParser::stopOn (const string& option, const string& optionAlias,
 		const string& description, boolOptFunc callback) {
@@ -157,7 +157,7 @@ argVector ArgParser::parse (int argc, char **argv) {
 	throw Exception (os.str ())
 
 			// maybe there are not enough arguments
-			if (advance > argc) {
+			if (advance > (unsigned int) argc) {
 				COMPLAIN_NOT_ENOUGH_ARGUMENTS (argc - 1);
 			}
 			for (i = 1; i < advance; i++) {

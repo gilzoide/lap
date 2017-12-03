@@ -5,11 +5,10 @@ Welcome to lap hell build script
 lap is the Lambda Argument Parser, a functional style C++11 library for parsing
 command line arguments
 
-Call with `hell debug=1` for a debug build (-g compiler flag)
+Call with `hell Debug=1` for a debug build (-g compiler flag)
 
-When installing, there will be the library itself (.so), headers and pkg-config
-script. Soon there will be man pages as well.
-]]
+When installing, there will be the library itself, headers and pkg-config
+script. Anytime there will be man pages as well.]]
 
 hell.outdir = 'build'
 

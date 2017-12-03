@@ -1,2 +1,1 @@
 - Fazer aquele rolê que nem o getopt (short options no mesmo '-')
-- Achar um jeito sussa de mandar lambdas sem retorno
